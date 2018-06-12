@@ -1,6 +1,8 @@
 var request = require('request');
 var fs = require('fs');
 var tokens = require('./secrets').GITHUB_TOKEN;
+var owner = process.argv.slice(2,3);
+var repo = process.argv.slice(3);
 
 console.log('Welcome to the GitHub Avatar Downloader!')
 
@@ -12,6 +14,10 @@ function getRepoContributors(repoOwner, repoName, cb) {
       'Authorization': 'token ' + tokens
     }
   };
+  if (!owner.length || !repo.length) {
+    console.log("Please enter both owner name and repo")
+    return;
+  }
   request(options, cb);
 }
 
@@ -31,7 +37,6 @@ function getAllAvatars(err, response, body) {
   }
 }
 
-
-getRepoContributors("jquery", "jquery", getAllAvatars);
+getRepoContributors(owner, repo, getAllAvatars);
 
 
